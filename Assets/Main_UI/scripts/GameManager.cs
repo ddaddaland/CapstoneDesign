@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public string[] miniGames;
-    public int currenIndex = 0;
+    public int currentIndex = 0;
     private string currentGame;
     void Awake()
     {
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     }
     IEnumerator StartGame()
     {
-        yield return SceneManager.LoadSceneAsync("Mini_Game01"); ;
+        yield return SceneManager.LoadSceneAsync(miniGames[currentIndex]); ;
         SceneManager.LoadSceneAsync("Mini_Game_UI", LoadSceneMode.Additive);
     }
     //IEnumerator NextGame(string current, string next)
