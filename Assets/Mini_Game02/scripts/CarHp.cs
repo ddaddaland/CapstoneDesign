@@ -1,15 +1,18 @@
+using TMPro;
 using UnityEngine;
 
 public class CarHp : MonoBehaviour
 {
-    public int HP = 3;
+    public int Hp = 3;
 
-    public float invincibleTime = 2f;
+    public float invincibleTime = 0.5f;
+    public TextMeshProUGUI hpText;
     private float currentTime = 0f;
     private bool isHit = false;
 
     void Start()
     {
+        hpText.text = "HP : " + Hp;
     }
 
     void Update()
@@ -37,18 +40,18 @@ public class CarHp : MonoBehaviour
 
     void TakeDamage(int damage)
     {
-        HP -= damage;
+        Hp -= damage;
         isHit = true;
-        currentTime = 0f; 
-
-        if (HP <= 0)
+        currentTime = 0f;
+        hpText.text = "HP : " + Hp;
+        if (Hp <= 0)
         {
-            Die();
+            GameOver();
         }
     }
 
-    void Die()
+    void GameOver()
     {
-        Debug.Log("게임 오버!");
+        GameManager.instance.GameOver();
     }
 }

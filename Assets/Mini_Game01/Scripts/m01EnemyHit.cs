@@ -5,11 +5,13 @@ public class m01EnemyHit : MonoBehaviour
 {
     public GameObject explosion;
     public int hp = 5;
+    public m01EnemySpawn enemySpawner;
     private MeshRenderer meshRenderer;
     private Color originalColor;
     private void Start()
     {
-        meshRenderer = GetComponent<MeshRenderer>();
+
+        meshRenderer = GetComponentInChildren<MeshRenderer>();
         originalColor = meshRenderer.material.color;
     }
     public void TakeDamage()
@@ -17,17 +19,18 @@ public class m01EnemyHit : MonoBehaviour
         hp--;
         if (hp <= 0)
         {
-            GameObject tmp = Instantiate(explosion, transform.position, transform.rotation);
-            Destroy(tmp, 3.0f);
-            Destroy(gameObject);
+            GameObject explosionEffect = Instantiate(explosion, transform.position, transform.rotation);
+            enemySpawner.enemyCount--;
+            Destroy(explosionEffect, 3.0f);
+            Destroy(transform.parent.gameObject);
+            return;
         }
-        StartCoroutine(HitFlahEffect());
+        meshRenderer.material.color = Color.red;
+        Invoke("ResetColor", 0.1f);
     }
 
-    IEnumerator HitFlahEffect()
+    public void ResetColor()
     {
-        meshRenderer.material.color = Color.red;
-        yield return new WaitForSeconds(0.1f);
         meshRenderer.material.color = originalColor;
 
     }

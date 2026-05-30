@@ -10,7 +10,6 @@ public class ObjectSpawner : MonoBehaviour
     public float spawnTime = 2f;
     private float currentTime = 0f;
     private Transform[] spawnPos;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         spawnPos = new Transform[transform.childCount];
@@ -20,8 +19,6 @@ public class ObjectSpawner : MonoBehaviour
         }
 
     }
-
-    // Update is called once per frame
     void Update()
     {
         if(currentTime >= spawnTime)
@@ -43,9 +40,9 @@ public class ObjectSpawner : MonoBehaviour
     {
         int obstacleCnt = Random.Range(1, 4);
         List<int> availableRoad = new List<int> { 0, 1, 2, 3 };
-        int randomObstacle = Random.Range(0, obstaclePrefab.Length);
         for(int i = 0; i< obstacleCnt; i++)
         {
+            int randomObstacle = Random.Range(0, obstaclePrefab.Length);
             int randomIndex = Random.Range(0, availableRoad.Count);
             int selectedRoad = availableRoad[randomIndex];
             Instantiate(obstaclePrefab[randomObstacle], spawnPos[selectedRoad].position, Quaternion.identity);

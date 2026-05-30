@@ -3,20 +3,11 @@ using UnityEngine;
 
 public class m01EnemyMove : MonoBehaviour
 {
-    private float moveSpeed = 4f;
-    private float upDownSpeed = 2f;
+    public float moveSpeed = 4f;
     public float moveTime = 1f;
-    public float movePassTime = 0f;
-    private Vector3 ufoPos;
-    public int ufoXDirection = 0;
-    public int ufoYDirection = 0;
-    void UfoFloat()
-    {
-        float sinValue = Mathf.Sin(Time.time * upDownSpeed);
-        Vector3 tmp = ufoPos;
-        tmp.y = transform.position.y + sinValue * 0.01f;
-        transform.position = tmp;
-    }
+    private float movePassTime = 0f;
+    private int ufoXDirection = 0;
+    private int ufoYDirection = 0;
     void ClampToScreen()
     {
         Vector3 viewPos = Camera.main.WorldToViewportPoint(transform.position);
@@ -56,8 +47,6 @@ public class m01EnemyMove : MonoBehaviour
 
     void Update()
     {
-        ufoPos = transform.position;
-        UfoFloat();
         if (movePassTime >= moveTime)
         {
             movePassTime = 0;

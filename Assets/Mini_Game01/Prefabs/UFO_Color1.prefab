@@ -273,8 +273,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::m01EnemyHit
   explosion: {fileID: 1000011797152326, guid: acf39d9f4addf294d93fa56fa373961b, type: 3}
-  shoot: {fileID: 0}
   hp: 2
+  enemySpawner: {fileID: 5320856715215816987, guid: 74b6b97ced455b54a90a0fd9f8cde765, type: 3}
 --- !u!114 &9054530446488589390
 MonoBehaviour:
   m_ObjectHideFlags: 0

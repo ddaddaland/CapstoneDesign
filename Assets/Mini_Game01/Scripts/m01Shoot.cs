@@ -26,6 +26,8 @@ public class m01Shoot : MonoBehaviour
     }
     void Update()
     {
+        if (Time.timeScale == 0f)
+            return;
         if (firePassTime >= fireTime) {
             if (Input.GetMouseButtonDown(0)) { 
                 firePassTime = 0;
