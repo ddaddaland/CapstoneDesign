@@ -10,6 +10,7 @@ public class DragToBoxGame : MonoBehaviour
     private GameObject box;
     private GameObject star;
     private bool running = false;
+    private bool IsCleared = false;
 
     void Start()
     {
@@ -40,11 +41,13 @@ public class DragToBoxGame : MonoBehaviour
         var starPos = star.GetComponent<RectTransform>().anchoredPosition;
         var boxPos = box.GetComponent<RectTransform>().anchoredPosition;
 
-        if (Mathf.Abs(starPos.x - boxPos.x) < 80f && Mathf.Abs(starPos.y - boxPos.y) < 80f)
+        if (Mathf.Abs(starPos.x - boxPos.x) < 80f && Mathf.Abs(starPos.y - boxPos.y) < 80f && IsCleared == false)
         {
             running = false;
+            IsCleared = true;
             Destroy(star);
             Debug.Log("게임 성공! (클리어)");
+            GameManager.instance.GameClear();
         }
     }
 }

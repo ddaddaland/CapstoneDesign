@@ -10,6 +10,7 @@ public class TapTargetGame : MonoBehaviour
     private int hitCount = 0;
     private const int RequiredHits = 3;
     private bool running = false;
+    private bool IsCleared = false;
 
     void Start()
     {
@@ -41,12 +42,13 @@ public class TapTargetGame : MonoBehaviour
         if (!running) return;
 
         hitCount++;
-        if (hitCount >= RequiredHits)
+        if (hitCount >= RequiredHits && IsCleared == false)
         {
             running = false;
+            IsCleared = true;
             Debug.Log("게임 성공! (클리어)");
             if (currentTarget != null) Destroy(currentTarget);
-            return;
+            GameManager.instance.GameClear();
         }
         SpawnTarget();
     }

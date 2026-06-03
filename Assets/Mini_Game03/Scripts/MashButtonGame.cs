@@ -10,6 +10,7 @@ public class MashButtonGame : MonoBehaviour
     private GameObject barFill;
     private float progress;
     private bool running = false;
+    private bool IsCleared = false;
 
     void Start()
     {
@@ -38,10 +39,12 @@ public class MashButtonGame : MonoBehaviour
         float maxBarWidth = gameArea.rect.width - 80f;
         barFill.GetComponent<RectTransform>().sizeDelta = new Vector2(maxBarWidth * Mathf.Clamp01(progress), 48f);
 
-        if (progress >= 1f)
+        if (progress >= 1f && IsCleared == false)
         {
             running = false;
+            IsCleared = true;
             Debug.Log("게임 성공! (클리어)");
+            GameManager.instance.GameClear();
         }
     }
 }

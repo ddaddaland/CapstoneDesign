@@ -10,6 +10,8 @@ public class DodgeGame : MonoBehaviour
     private GameObject[] obstacles = new GameObject[10];
     private float spawnTimer = 0.2f;
     private bool running = false;
+    private bool IsCleaared = false;
+    private bool IsOver = false;
 
     private float surviveTimer = 0f;
 
@@ -32,11 +34,11 @@ public class DodgeGame : MonoBehaviour
 
         surviveTimer += Time.deltaTime;
 
-        if (surviveTimer >= 5f)
+        if (surviveTimer >= 5f && IsCleaared == false)
         {
+            IsCleaared = true;
             running = false;
-            Debug.Log("게임 성공! (5초 생존 클리어)");
-            return;
+            GameManager.instance.GameClear();
         }
 
         MovePlayer();
@@ -96,10 +98,11 @@ public class DodgeGame : MonoBehaviour
             pos.y -= 380f * Time.deltaTime;
             rt.anchoredPosition = pos;
 
-            if (Vector2.Distance(pos, playerPos) < 62f)
+            if (Vector2.Distance(pos, playerPos) < 62f && IsOver == false)
             {
+                IsOver = true;
                 running = false;
-                Debug.Log("게임 실패! (장애물 충돌)");
+                GameManager.instance.GameOver();
             }
 
             if (pos.y < -(halfH + 20f))

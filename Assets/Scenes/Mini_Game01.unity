@@ -668,7 +668,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1164959757
-  m_SortingLayer: -1
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -5858099061022299432, guid: 924bb3ce549ad0140a0a400e57ebae24, type: 3}
@@ -989,7 +989,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6574318166367226260, guid: 74b6b97ced455b54a90a0fd9f8cde765, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 10
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6574318166367226260, guid: 74b6b97ced455b54a90a0fd9f8cde765, type: 3}
       propertyPath: m_LocalRotation.w

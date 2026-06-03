@@ -17,6 +17,8 @@ public class MemoryColorGame : MonoBehaviour
     private GameObject preview;
     private GameObject[] choices = new GameObject[4];
     private bool running = false;
+    private bool IsCleared = false;
+    private bool IsOver = false;
 
     void Start()
     {
@@ -65,7 +67,17 @@ public class MemoryColorGame : MonoBehaviour
         if (!running) return;
 
         running = false;
-        if (selected == targetColor) Debug.Log("게임 성공! (클리어)");
-        else Debug.Log("게임 실패!");
+        if (selected == targetColor && IsCleared == false)
+        {
+            IsCleared = true;
+            Debug.Log("게임 성공! (클리어)");
+            GameManager.instance.GameClear();
+        }
+        else if (IsOver == false)
+        {
+            IsOver = true;
+            Debug.Log("게임 실패!");
+            GameManager.instance.GameOver();
+        }
     }
 }

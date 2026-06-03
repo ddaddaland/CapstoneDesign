@@ -12,6 +12,7 @@ public class CatchFruitGame : MonoBehaviour
     private int caught = 0;
     private float spawnTimer = 0.15f;
     private bool running = false;
+    private bool IsCleared = false;
 
     void Start()
     {
@@ -62,10 +63,12 @@ public class CatchFruitGame : MonoBehaviour
                 Destroy(fruits[i]);
                 fruits[i] = null;
                 caught++;
-                if (caught >= 3)
+                if (caught >= 3 && IsCleared == false)
                 {
                     running = false;
+                    IsCleared = true;
                     Debug.Log("게임 성공! (클리어)");
+                    GameManager.instance.GameClear();
                 }
             }
             else if (pos.y < -(halfH + 20f))
