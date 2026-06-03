@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2798144144959174705}
   - component: {fileID: 4685431018634340697}
+  - component: {fileID: 8100000000000000003}
   m_Layer: 0
   m_Name: CatchFruitGame
   m_TagString: Untagged
@@ -47,3 +48,15 @@ MonoBehaviour:
   basketPrefab: {fileID: 100000, guid: c1a32d86900c31e9dbb471e37c98b7f1, type: 3}
   fruitRedPrefab: {fileID: 100000, guid: 6ca7b75b0a0585e7803e9a3ec8575303, type: 3}
   fruitYellowPrefab: {fileID: 100000, guid: 8405d05d806393e1ae7b19515c24e824, type: 3}
+--- !u!114 &8100000000000000003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7605687993356912011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a01773bdf5d62bc418c6854da91ebc78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MiniGame.MicroGameSceneHost

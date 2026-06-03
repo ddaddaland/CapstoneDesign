@@ -14,7 +14,12 @@ namespace MiniGame
         private static Font cachedFont;
 
         public virtual void Setup() { }
-        public virtual void StartGame() { running = true; }
+        public virtual void StartGame()
+        {
+            cleared = false;
+            failed = false;
+            running = true;
+        }
         public virtual void EndGame() { running = false; }
         public virtual void Cleanup() { }
 

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8042438323763449127}
   - component: {fileID: 4269778950935036783}
+  - component: {fileID: 8100000000000000004}
   m_Layer: 0
   m_Name: MemoryColorGame
   m_TagString: Untagged
@@ -46,3 +47,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MiniGame.MemoryColorGame
   previewPrefab: {fileID: 100000, guid: a795772307e83cb67da8869c5a8391af, type: 3}
   choicePrefab: {fileID: 100000, guid: 3d64cbc201a2c06f452c0bbe3d7ac3db, type: 3}
+--- !u!114 &8100000000000000004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2899345248359594042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a01773bdf5d62bc418c6854da91ebc78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MiniGame.MicroGameSceneHost

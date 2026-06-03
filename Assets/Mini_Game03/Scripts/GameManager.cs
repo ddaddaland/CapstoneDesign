@@ -29,8 +29,21 @@ namespace MiniGame
         public float introDuration = 0.28f;
         public float resultDuration = 0.9f;
 
-        private readonly List<string> microGamePrefabPaths = new List<string>();
+        // ── [수정] 프리팹 경로 대신 씬 이름 목록으로 변경 ──
+        private readonly List<string> microGameSceneNames = new List<string>
+        {
+            "TapTargetGame",
+            "DodgeGame",
+            "CatchFruitGame",
+            "MemoryColorGame",
+            "MashButtonGame",
+            "DragToBoxGame"
+        };
+
         private MicroGameBase currentGame;
+        private string loadedSceneName;   // 현재 로드된 미니게임 씬 이름
+        private bool standaloneMode;
+        private MicroGameBase standaloneMicroGame;
         private int score;
         private int lives;
         private int roundsCleared;
@@ -50,6 +63,32 @@ namespace MiniGame
         private Color resultBaseColor;
         private Color instructionBaseColor;
 
+        public void BindUiFromCanvas(Transform canvasRoot)
+        {
+            instructionText = MicroGameSceneHost.FindChildComponent<TextMeshProUGUI>(canvasRoot, "InstructionText");
+            timerText       = MicroGameSceneHost.FindChildComponent<TextMeshProUGUI>(canvasRoot, "TimerText");
+            scoreText       = MicroGameSceneHost.FindChildComponent<TextMeshProUGUI>(canvasRoot, "ScoreText");
+            livesText       = MicroGameSceneHost.FindChildComponent<TextMeshProUGUI>(canvasRoot, "LivesText");
+            resultText      = MicroGameSceneHost.FindChildComponent<TextMeshProUGUI>(canvasRoot, "ResultText");
+
+            var gameAreaTransform = MicroGameSceneHost.FindChildTransform(canvasRoot, "GameArea");
+            if (gameAreaTransform != null)
+                gameArea = gameAreaTransform.gameObject;
+
+            var flashPrefab = Resources.Load<GameObject>("Prefabs/UI/FlashOverlay");
+            if (flashPrefab != null && canvasRoot != null)
+            {
+                var flashInstance = Instantiate(flashPrefab, canvasRoot);
+                flashOverlay = flashInstance.GetComponent<Image>();
+            }
+        }
+
+        public void EnableStandaloneMode(MicroGameBase microGame)
+        {
+            standaloneMode       = true;
+            standaloneMicroGame  = microGame;
+        }
+
         private void Awake()
         {
             Instance = this;
@@ -58,16 +97,14 @@ namespace MiniGame
 
         private void Start()
         {
+            if (gameArea == null)
+            {
+                Debug.LogError("GameManager: gameArea가 연결되지 않았습니다. Main 씬 UI 또는 미니게임 씬 부트스트랩을 확인하세요.");
+                return;
+            }
+
             lives = startingLives;
             CacheUiReferences();
-
-            microGamePrefabPaths.Add("Prefabs/MicroGames/TapTargetGame");
-            microGamePrefabPaths.Add("Prefabs/MicroGames/DodgeGame");
-            microGamePrefabPaths.Add("Prefabs/MicroGames/CatchFruitGame");
-            microGamePrefabPaths.Add("Prefabs/MicroGames/MemoryColorGame");
-            microGamePrefabPaths.Add("Prefabs/MicroGames/MashButtonGame");
-            microGamePrefabPaths.Add("Prefabs/MicroGames/DragToBoxGame");
-
             ResetPresentationState();
             UpdateHud();
             StartCoroutine(GameLoop());
@@ -76,50 +113,60 @@ namespace MiniGame
         private void OnDestroy()
         {
             Time.timeScale = 1f;
-            if (Instance == this)
-            {
-                Instance = null;
-            }
+            if (Instance == this) Instance = null;
         }
 
         private void CacheUiReferences()
         {
-            gameAreaRect = gameArea != null ? gameArea.GetComponent<RectTransform>() : null;
-            instructionRect = instructionText != null ? instructionText.rectTransform : null;
-            resultRect = resultText != null ? resultText.rectTransform : null;
+            gameAreaRect    = gameArea        != null ? gameArea.GetComponent<RectTransform>() : null;
+            instructionRect = instructionText != null ? instructionText.rectTransform          : null;
+            resultRect      = resultText      != null ? resultText.rectTransform               : null;
 
-            if (gameAreaRect != null)
-            {
-                gameAreaBasePos = gameAreaRect.anchoredPosition;
-                gameAreaBaseScale = gameAreaRect.localScale;
-                gameAreaBaseRotation = gameAreaRect.localRotation;
-            }
-
-            if (instructionRect != null)
-            {
-                instructionBaseScale = instructionRect.localScale;
-            }
-
-            if (resultRect != null)
-            {
-                resultBaseScale = resultRect.localScale;
-            }
-
-            if (timerText != null)
-            {
-                timerBaseColor = timerText.color;
-            }
-
-            if (resultText != null)
-            {
-                resultBaseColor = resultText.color;
-            }
-
-            if (instructionText != null)
-            {
-                instructionBaseColor = instructionText.color;
-            }
+            if (gameAreaRect    != null) { gameAreaBasePos = gameAreaRect.anchoredPosition; gameAreaBaseScale = gameAreaRect.localScale; gameAreaBaseRotation = gameAreaRect.localRotation; }
+            if (instructionRect != null) { instructionBaseScale = instructionRect.localScale; }
+            if (resultRect      != null) { resultBaseScale = resultRect.localScale; }
+            if (timerText       != null) { timerBaseColor = timerText.color; }
+            if (resultText      != null) { resultBaseColor = resultText.color; }
+            if (instructionText != null) { instructionBaseColor = instructionText.color; }
         }
+
+        // ────────────────────────────────────────────────────
+        // 씬 로드 / 언로드
+        // ────────────────────────────────────────────────────
+
+        /// <summary>미니게임 씬을 Additive로 로드하고 MicroGameBase를 찾아 currentGame에 할당합니다.</summary>
+        private IEnumerator LoadMicroGameScene(string sceneName)
+        {
+            var op = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+            yield return op;
+
+            loadedSceneName = sceneName;
+
+            // 로드된 씬의 루트 오브젝트에서 MicroGameBase 컴포넌트를 찾습니다.
+            var scene = SceneManager.GetSceneByName(sceneName);
+            foreach (var root in scene.GetRootGameObjects())
+            {
+                currentGame = root.GetComponentInChildren<MicroGameBase>(true);
+                if (currentGame != null) break;
+            }
+
+            if (currentGame == null)
+                Debug.LogError($"GameManager: '{sceneName}' 씬에서 MicroGameBase 컴포넌트를 찾을 수 없습니다!");
+        }
+
+        /// <summary>현재 로드된 미니게임 씬을 언로드합니다.</summary>
+        private IEnumerator UnloadMicroGameScene()
+        {
+            if (string.IsNullOrEmpty(loadedSceneName)) yield break;
+
+            yield return SceneManager.UnloadSceneAsync(loadedSceneName);
+            loadedSceneName = null;
+            currentGame     = null;
+        }
+
+        // ────────────────────────────────────────────────────
+        // 게임 루프
+        // ────────────────────────────────────────────────────
 
         private IEnumerator GameLoop()
         {
@@ -136,14 +183,26 @@ namespace MiniGame
         private IEnumerator PrepareRound()
         {
             ResetPresentationState();
-            currentGame = SpawnMicroGame(microGamePrefabPaths[Random.Range(0, microGamePrefabPaths.Count)]);
+
+            if (standaloneMode)
+            {
+                currentGame = standaloneMicroGame;
+            }
+            else
+            {
+                string sceneName = microGameSceneNames[Random.Range(0, microGameSceneNames.Count)];
+                yield return StartCoroutine(LoadMicroGameScene(sceneName));
+            }
+
+            if (currentGame == null) yield break;
+
             currentGame.Setup();
 
             instructionText.gameObject.SetActive(true);
-            instructionText.text = currentGame.Instruction;
+            instructionText.text  = currentGame.Instruction;
             instructionText.color = instructionBaseColor;
-            resultText.text = string.Empty;
-            timerText.text = string.Empty;
+            resultText.text       = string.Empty;
+            timerText.text        = string.Empty;
 
             yield return StartCoroutine(PlayInstructionZoom());
 
@@ -153,36 +212,28 @@ namespace MiniGame
 
         private IEnumerator PlayRound()
         {
-            timer = microGameDuration;
+            timer          = microGameDuration;
             currentSuccess = false;
             currentGame.StartGame();
 
             while (timer > 0f)
             {
                 timer -= Time.deltaTime;
-                float clampedTimer = Mathf.Max(0f, timer);
-                timerText.text = Mathf.CeilToInt(clampedTimer).ToString();
-                float warningLerp = 1f - Mathf.Clamp01(clampedTimer / 1.5f);
+                float clampedTimer  = Mathf.Max(0f, timer);
+                float warningLerp   = 1f - Mathf.Clamp01(clampedTimer / 1.5f);
+
+                timerText.text  = Mathf.CeilToInt(clampedTimer).ToString();
                 timerText.color = Color.Lerp(timerBaseColor, new Color(1f, 0.3f, 0.25f), warningLerp);
                 timerText.rectTransform.localScale = Vector3.one * (1f + warningLerp * 0.28f + Mathf.Sin(Time.time * 24f) * warningLerp * 0.06f);
 
-                if (currentGame.IsCleared())
-                {
-                    currentSuccess = true;
-                    break;
-                }
-
-                if (currentGame.IsFailed())
-                {
-                    currentSuccess = false;
-                    break;
-                }
+                if (currentGame.IsCleared()) { currentSuccess = true;  break; }
+                if (currentGame.IsFailed())  { currentSuccess = false; break; }
 
                 yield return null;
             }
 
             currentGame.EndGame();
-            timerText.text = string.Empty;
+            timerText.text  = string.Empty;
             timerText.color = timerBaseColor;
             timerText.rectTransform.localScale = Vector3.one;
         }
@@ -194,72 +245,67 @@ namespace MiniGame
                 score++;
                 roundsCleared++;
                 IncreaseSpeed();
-                resultText.text = $"����!";
+                resultText.text  = "성공!";
                 resultText.color = new Color(0.18f, 1f, 0.38f);
             }
             else
             {
                 lives--;
-                resultText.text = "����!";
+                resultText.text  = "실패!";
                 resultText.color = new Color(1f, 0.26f, 0.26f);
             }
 
             UpdateHud();
             yield return StartCoroutine(AnimateRoundResult(currentSuccess));
 
-            resultText.text = string.Empty;
+            resultText.text  = string.Empty;
             resultText.color = resultBaseColor;
             ResetPresentationState();
 
             currentGame.Cleanup();
-            Destroy(currentGame.gameObject);
-            currentGame = null;
+            if (!standaloneMode)
+                yield return StartCoroutine(UnloadMicroGameScene());
         }
 
         private IEnumerator ShowGameOver()
         {
-            Time.timeScale = 1f;
-            currentTimeScale = 1f;
+            Time.timeScale    = 1f;
+            currentTimeScale  = 1f;
             instructionText.gameObject.SetActive(true);
             instructionText.color = Color.white;
-            float highestSpeed = Mathf.Min(maxTimeScale, 1f + roundsCleared * speedIncreasePerClear);
-            instructionText.text = $"Game Over!\n����: {score}\nŬ���ؼ� �ٽ� ����";
-            resultText.text = string.Empty;
-            timerText.text = string.Empty;
+            instructionText.text  = $"Game Over!\n점수: {score}\n클릭해서 다시 시작";
+            resultText.text       = string.Empty;
+            timerText.text        = string.Empty;
+
             yield return new WaitForSeconds(0.35f);
-            while (!Input.GetMouseButtonDown(0))
-            {
-                yield return null;
-            }
+            while (!Input.GetMouseButtonDown(0)) yield return null;
+
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
+
+        // ────────────────────────────────────────────────────
+        // 연출
+        // ────────────────────────────────────────────────────
 
         private IEnumerator PlayInstructionZoom()
         {
             ResetPresentationState();
-            float startAngle = Random.Range(-7f, 7f);
-            Vector3 startGameScale = gameAreaBaseScale * introZoomScale;
-            Vector3 startTextScale = instructionBaseScale * 1.9f;
-            Color startInstructionColor = new Color(1f, 0.95f, 0.35f);
-            float t = 0f;
+            float   startAngle      = Random.Range(-7f, 7f);
+            Vector3 startGameScale  = gameAreaBaseScale * introZoomScale;
+            Vector3 startTextScale  = instructionBaseScale * 1.9f;
+            Color   startColor      = new Color(1f, 0.95f, 0.35f);
+            float   t = 0f;
 
             while (t < introDuration)
             {
                 t += Time.deltaTime;
                 float progress = Mathf.Clamp01(t / introDuration);
-                float eased = EaseOutBack(progress);
-                if (gameAreaRect != null)
-                {
-                    gameAreaRect.localScale = Vector3.Lerp(startGameScale, gameAreaBaseScale, eased);
-                    gameAreaRect.localRotation = Quaternion.Euler(0f, 0f, Mathf.Lerp(startAngle, 0f, eased));
-                }
+                float eased    = EaseOutBack(progress);
 
-                if (instructionRect != null)
-                {
-                    instructionRect.localScale = Vector3.Lerp(startTextScale, instructionBaseScale, eased);
-                }
+                if (gameAreaRect    != null) { gameAreaRect.localScale    = Vector3.Lerp(startGameScale, gameAreaBaseScale, eased); gameAreaRect.localRotation = Quaternion.Euler(0f, 0f, Mathf.Lerp(startAngle, 0f, eased)); }
+                if (instructionRect != null) { instructionRect.localScale = Vector3.Lerp(startTextScale, instructionBaseScale, eased); }
 
-                instructionText.color = Color.Lerp(startInstructionColor, instructionBaseColor, progress);
+                instructionText.color = Color.Lerp(startColor, instructionBaseColor, progress);
                 SetFlashColor(new Color(1f, 0.95f, 0.65f, Mathf.Lerp(0.24f, 0f, progress)));
                 yield return null;
             }
@@ -268,11 +314,7 @@ namespace MiniGame
             while (settle < 0.16f)
             {
                 settle += Time.deltaTime;
-                float wobble = Mathf.Sin(settle * 34f) * 0.02f;
-                if (instructionRect != null)
-                {
-                    instructionRect.localScale = instructionBaseScale * (1f + wobble);
-                }
+                if (instructionRect != null) instructionRect.localScale = instructionBaseScale * (1f + Mathf.Sin(settle * 34f) * 0.02f);
                 yield return null;
             }
 
@@ -281,10 +323,7 @@ namespace MiniGame
 
         private IEnumerator AnimateRoundResult(bool success)
         {
-            if (resultText == null)
-            {
-                yield break;
-            }
+            if (resultText == null) yield break;
 
             ResetPresentationState();
             resultText.gameObject.SetActive(true);
@@ -294,24 +333,24 @@ namespace MiniGame
             while (t < resultDuration)
             {
                 t += Time.deltaTime;
-                float progress = Mathf.Clamp01(t / resultDuration);
-                float fade = 1f - progress;
-                float punch = Mathf.Sin(progress * Mathf.PI);
+                float progress      = Mathf.Clamp01(t / resultDuration);
+                float fade          = 1f - progress;
+                float punch         = Mathf.Sin(progress * Mathf.PI);
                 float shakeStrength = success ? 10f : 22f;
-                float shake = Mathf.Sin(progress * 42f) * shakeStrength * fade;
+                float shake         = Mathf.Sin(progress * 42f) * shakeStrength * fade;
 
                 if (gameAreaRect != null)
                 {
                     gameAreaRect.anchoredPosition = gameAreaBasePos + new Vector2(shake, success ? 0f : Mathf.Cos(progress * 34f) * 6f * fade);
-                    gameAreaRect.localScale = gameAreaBaseScale * (1f + (success ? 0.12f : -0.05f) * punch);
-                    gameAreaRect.localRotation = Quaternion.Euler(0f, 0f, success ? Mathf.Sin(progress * 18f) * 2.5f * fade : Mathf.Sin(progress * 30f) * 8f * fade);
+                    gameAreaRect.localScale       = gameAreaBaseScale * (1f + (success ? 0.12f : -0.05f) * punch);
+                    gameAreaRect.localRotation    = Quaternion.Euler(0f, 0f, success ? Mathf.Sin(progress * 18f) * 2.5f * fade : Mathf.Sin(progress * 30f) * 8f * fade);
                 }
 
                 if (resultRect != null)
                 {
-                    float appear = EaseOutBack(Mathf.Clamp01(progress / 0.3f));
+                    float appear    = EaseOutBack(Mathf.Clamp01(progress / 0.3f));
                     float overshoot = success ? 0.45f : 0.25f;
-                    resultRect.localScale = resultBaseScale * Mathf.Lerp(0.2f, 1f + overshoot * punch, appear);
+                    resultRect.localScale    = resultBaseScale * Mathf.Lerp(0.2f, 1f + overshoot * punch, appear);
                     resultRect.localRotation = Quaternion.Euler(0f, 0f, success ? Mathf.Sin(progress * 16f) * 4f * fade : Mathf.Sin(progress * 32f) * 9f * fade);
                 }
 
@@ -326,85 +365,28 @@ namespace MiniGame
         private void IncreaseSpeed()
         {
             currentTimeScale = Mathf.Min(maxTimeScale, currentTimeScale + speedIncreasePerClear);
-            Time.timeScale = currentTimeScale;
+            Time.timeScale   = currentTimeScale;
         }
 
         private void ResetPresentationState()
         {
-            if (gameAreaRect != null)
-            {
-                gameAreaRect.anchoredPosition = gameAreaBasePos;
-                gameAreaRect.localScale = gameAreaBaseScale;
-                gameAreaRect.localRotation = gameAreaBaseRotation;
-            }
-
-            if (instructionRect != null)
-            {
-                instructionRect.localScale = instructionBaseScale;
-                instructionRect.localRotation = Quaternion.identity;
-            }
-
-            if (resultRect != null)
-            {
-                resultRect.localScale = resultBaseScale;
-                resultRect.localRotation = Quaternion.identity;
-            }
-
-            if (instructionText != null)
-            {
-                instructionText.color = instructionBaseColor;
-            }
-
-            if (timerText != null)
-            {
-                timerText.color = timerBaseColor;
-                timerText.rectTransform.localScale = Vector3.one;
-            }
-
+            if (gameAreaRect    != null) { gameAreaRect.anchoredPosition = gameAreaBasePos; gameAreaRect.localScale = gameAreaBaseScale; gameAreaRect.localRotation = gameAreaBaseRotation; }
+            if (instructionRect != null) { instructionRect.localScale = instructionBaseScale; instructionRect.localRotation = Quaternion.identity; }
+            if (resultRect      != null) { resultRect.localScale = resultBaseScale;           resultRect.localRotation      = Quaternion.identity; }
+            if (instructionText != null) { instructionText.color = instructionBaseColor; }
+            if (timerText       != null) { timerText.color = timerBaseColor; timerText.rectTransform.localScale = Vector3.one; }
             SetFlashColor(Color.clear);
         }
 
         private void SetFlashColor(Color color)
         {
-            if (flashOverlay == null) return;
-            flashOverlay.color = color;
-        }
-
-        private MicroGameBase SpawnMicroGame(string resourcesPath)
-        {
-            var prefab = Resources.Load<GameObject>(resourcesPath);
-            if (prefab == null)
-            {
-                Debug.LogError($"Microgame prefab not found: Resources/{resourcesPath}");
-                var fallback = new GameObject(resourcesPath);
-                fallback.transform.SetParent(gameArea.transform, false);
-                fallback.AddComponent<RectTransform>();
-                return fallback.AddComponent<TapTargetGame>();
-            }
-
-            var instance = Instantiate(prefab, gameArea.transform, false);
-
-            // --- [���Ⱑ �ٽ� ���� �κ��Դϴ�!] ---
-            // �̴ϰ��� �������� ������ �� ��ġ�� �������� �ʵ��� GameArea�� �� ���� �����ݴϴ�.
-            RectTransform rt = instance.GetComponent<RectTransform>();
-            if (rt != null)
-            {
-                rt.anchorMin = Vector2.zero;     // ��Ŀ ���� �Ʒ�
-                rt.anchorMax = Vector2.one;      // ��Ŀ ������ ��
-                rt.offsetMin = Vector2.zero;     // ���� ����
-                rt.offsetMax = Vector2.zero;     // ���� ����
-                rt.localScale = Vector3.one;     // ũ�� ����ȭ
-                rt.anchoredPosition = Vector2.zero; // ���߾� ��ġ
-            }
-            // ------------------------------------
-
-            return instance.GetComponent<MicroGameBase>();
+            if (flashOverlay != null) flashOverlay.color = color;
         }
 
         private void UpdateHud()
         {
-            scoreText.text = $"����: {score}";
-            livesText.text = $"���: {lives}";
+            scoreText.text = $"점수: {score}";
+            livesText.text = $"목숨: {lives}";
         }
 
         private static float EaseOutBack(float x)

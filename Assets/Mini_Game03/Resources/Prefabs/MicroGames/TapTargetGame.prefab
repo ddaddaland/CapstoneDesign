@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8745876404492285792}
   - component: {fileID: 7240442836806012587}
+  - component: {fileID: 8100000000000000001}
   m_Layer: 0
   m_Name: TapTargetGame
   m_TagString: Untagged
@@ -45,3 +46,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MiniGame.TapTargetGame
   targetPrefab: {fileID: 100000, guid: f56e604170e5a4f48057c06e5c9534db, type: 3}
+--- !u!114 &8100000000000000001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8692495713690639783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a01773bdf5d62bc418c6854da91ebc78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MiniGame.MicroGameSceneHost
