@@ -14,6 +14,29 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Mini_Game02.unity
     guid: 8bd5663a45edee841b4ba2ed0e6273df
-  m_configObjects:
-    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
+  - enabled: 1
+    path: Assets/Scenes/Mini_Game03.unity
+    guid: 0a508044b66c1a140852c09eb59fe175
+  - enabled: 1
+    path: Assets/Scenes/Mini_Game04.unity
+    guid: ed241dc9633be044cb2a2e283be5f0a5
+  - enabled: 1
+    path: Assets/Scenes/CatchFruitGame.unity
+    guid: 4be9bdfa7851f254b90bddc27b8ec2b9
+  - enabled: 1
+    path: Assets/Scenes/DodgeGame.unity
+    guid: 0170409c44364b64ea11cf0e2ab49526
+  - enabled: 1
+    path: Assets/Scenes/DragToBoxGame.unity
+    guid: 63a02307a9b5d5e4fad7d069c3245241
+  - enabled: 1
+    path: Assets/Scenes/MashButtonGame.unity
+    guid: d51f7ee926d4548438b81f84310333f2
+  - enabled: 1
+    path: Assets/Scenes/MemoryColorGame.unity
+    guid: e50c3bf60f629ad428d797d620d4e0d5
+  - enabled: 1
+    path: Assets/Scenes/TapTargetGame.unity
+    guid: efa7ac85e34ce924b877da76a397bf91
+  m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

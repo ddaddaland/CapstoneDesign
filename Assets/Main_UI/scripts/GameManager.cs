@@ -116,6 +116,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSecondsRealtime(2.0f);
         stageText.gameObject.SetActive(false);
         InitGame();
+        shuffleGames();
         Time.timeScale = gameSpeed;
         SceneManager.LoadSceneAsync(0);
     }

@@ -26,6 +26,7 @@ public class m01EnemySpawn : MonoBehaviour
         if (enemyCount <= 0 && isCleared == false)
         {
             isCleared = true;
+            Cursor.visible = true;
             GameManager.instance.GameClear();
         }
             

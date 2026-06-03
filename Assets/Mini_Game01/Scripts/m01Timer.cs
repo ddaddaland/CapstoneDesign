@@ -25,6 +25,7 @@ public class m01Timer : MonoBehaviour
         if(currentTime <= 0 && isTimeOver == false)
         {
             isTimeOver = true;
+            Cursor.visible = true;
             GameOver();
         }
     }
