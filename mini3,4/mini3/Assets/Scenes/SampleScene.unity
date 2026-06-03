@@ -512,7 +512,7 @@ MonoBehaviour:
   fuseWaveFrequency: 3
   fuseBurnSpeed: 13
   clickRadius: 1
-  requiredClicks: 10
+  requiredClicks: 8
   fuseOffset: {x: -4.5, y: 1, z: 0}
   fuseLine: {fileID: 1178092867}
   burnLine: {fileID: 1700531693}
