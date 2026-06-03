@@ -41,9 +41,7 @@ namespace MiniGame
         };
 
         private MicroGameBase currentGame;
-        private string loadedSceneName;   // 현재 로드된 미니게임 씬 이름
-        private bool standaloneMode;
-        private MicroGameBase standaloneMicroGame;
+        private string loadedSceneName;
         private int score;
         private int lives;
         private int roundsCleared;
@@ -63,32 +61,6 @@ namespace MiniGame
         private Color resultBaseColor;
         private Color instructionBaseColor;
 
-        public void BindUiFromCanvas(Transform canvasRoot)
-        {
-            instructionText = MicroGameSceneHost.FindChildComponent<TextMeshProUGUI>(canvasRoot, "InstructionText");
-            timerText       = MicroGameSceneHost.FindChildComponent<TextMeshProUGUI>(canvasRoot, "TimerText");
-            scoreText       = MicroGameSceneHost.FindChildComponent<TextMeshProUGUI>(canvasRoot, "ScoreText");
-            livesText       = MicroGameSceneHost.FindChildComponent<TextMeshProUGUI>(canvasRoot, "LivesText");
-            resultText      = MicroGameSceneHost.FindChildComponent<TextMeshProUGUI>(canvasRoot, "ResultText");
-
-            var gameAreaTransform = MicroGameSceneHost.FindChildTransform(canvasRoot, "GameArea");
-            if (gameAreaTransform != null)
-                gameArea = gameAreaTransform.gameObject;
-
-            var flashPrefab = Resources.Load<GameObject>("Prefabs/UI/FlashOverlay");
-            if (flashPrefab != null && canvasRoot != null)
-            {
-                var flashInstance = Instantiate(flashPrefab, canvasRoot);
-                flashOverlay = flashInstance.GetComponent<Image>();
-            }
-        }
-
-        public void EnableStandaloneMode(MicroGameBase microGame)
-        {
-            standaloneMode       = true;
-            standaloneMicroGame  = microGame;
-        }
-
         private void Awake()
         {
             Instance = this;
@@ -99,7 +71,7 @@ namespace MiniGame
         {
             if (gameArea == null)
             {
-                Debug.LogError("GameManager: gameArea가 연결되지 않았습니다. Main 씬 UI 또는 미니게임 씬 부트스트랩을 확인하세요.");
+                Debug.LogError("GameManager: gameArea가 연결되지 않았습니다. Main 씬 UI를 확인하세요.");
                 return;
             }
 
@@ -184,15 +156,8 @@ namespace MiniGame
         {
             ResetPresentationState();
 
-            if (standaloneMode)
-            {
-                currentGame = standaloneMicroGame;
-            }
-            else
-            {
-                string sceneName = microGameSceneNames[Random.Range(0, microGameSceneNames.Count)];
-                yield return StartCoroutine(LoadMicroGameScene(sceneName));
-            }
+            string sceneName = microGameSceneNames[Random.Range(0, microGameSceneNames.Count)];
+            yield return StartCoroutine(LoadMicroGameScene(sceneName));
 
             if (currentGame == null) yield break;
 
@@ -263,8 +228,7 @@ namespace MiniGame
             ResetPresentationState();
 
             currentGame.Cleanup();
-            if (!standaloneMode)
-                yield return StartCoroutine(UnloadMicroGameScene());
+            yield return StartCoroutine(UnloadMicroGameScene());
         }
 
         private IEnumerator ShowGameOver()

@@ -10,8 +10,11 @@ namespace MiniGame
         protected bool cleared;
         protected bool failed;
         protected bool running;
+        private RectTransform gameAreaOverride;
         private static Sprite cachedSprite;
         private static Font cachedFont;
+
+        public void SetGameArea(RectTransform area) => gameAreaOverride = area;
 
         public virtual void Setup() { }
         public virtual void StartGame()
@@ -26,11 +29,37 @@ namespace MiniGame
         public bool IsCleared() => cleared;
         public bool IsFailed() => failed;
 
-        protected RectTransform GameArea => GameManager.Instance.gameArea.GetComponent<RectTransform>();
+        protected RectTransform GameArea
+        {
+            get
+            {
+                if (gameAreaOverride != null)
+                    return gameAreaOverride;
 
-        // GameArea의 실제 크기 절반값 (스폰/이동 범위 계산에 사용)
-        protected float GameHalfW => GameArea.rect.width  * 0.5f;
-        protected float GameHalfH => GameArea.rect.height * 0.5f;
+                if (GameManager.Instance != null && GameManager.Instance.gameArea != null)
+                    return GameManager.Instance.gameArea.GetComponent<RectTransform>();
+
+                return null;
+            }
+        }
+
+        protected float GameHalfW
+        {
+            get
+            {
+                var area = GameArea;
+                return area != null ? area.rect.width * 0.5f : 400f;
+            }
+        }
+
+        protected float GameHalfH
+        {
+            get
+            {
+                var area = GameArea;
+                return area != null ? area.rect.height * 0.5f : 225f;
+            }
+        }
 
         protected GameObject SpawnPrefab(string resourcesPath, Transform parent)
         {
