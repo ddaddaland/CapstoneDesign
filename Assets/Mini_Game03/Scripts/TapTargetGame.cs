@@ -1,22 +1,46 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class TapTargetGame : MonoBehaviour
 {
     public RectTransform gameArea;
     public GameObject targetPrefab;
+    public TMP_Text instructionText;
+    public TMP_Text countText;
+    public TMP_Text timerText;
+
+    [Header("타이머")]
+    public float timeLimit = 5f;
 
     private GameObject currentTarget;
     private int hitCount = 0;
     private const int RequiredHits = 3;
     private bool running = false;
     private bool IsCleared = false;
+    private float timeLeft;
 
     void Start()
     {
         hitCount = 0;
+        timeLeft = timeLimit;
         running = true;
         SpawnTarget();
+    }
+
+    void Update()
+    {
+        if (!running) return;
+
+        timeLeft -= Time.deltaTime;
+        if (timerText != null)
+            timerText.text = $"남은 시간: {Mathf.Max(0f, timeLeft):F1}";
+
+        if (timeLeft <= 0f)
+        {
+            running = false;
+            GameManager.instance.GameOver();
+        }
     }
 
     void SpawnTarget()
@@ -42,6 +66,10 @@ public class TapTargetGame : MonoBehaviour
         if (!running) return;
 
         hitCount++;
+
+        if (countText != null)
+            countText.text = $"남은 타겟 {hitCount} / {RequiredHits}";
+
         if (hitCount >= RequiredHits && IsCleared == false)
         {
             running = false;

@@ -1,10 +1,14 @@
 using UnityEngine;
+using TMPro;
 
 public class DodgeGame : MonoBehaviour
 {
     public RectTransform gameArea;
     public GameObject playerPrefab;
     public GameObject obstaclePrefab;
+
+    public TMP_Text instructionText;
+    public TMP_Text timerText;
 
     private GameObject player;
     private GameObject[] obstacles = new GameObject[10];
@@ -23,7 +27,6 @@ public class DodgeGame : MonoBehaviour
         float halfH = gameArea.rect.height * 0.5f;
         player.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, -(halfH - 60f));
 
-        // 게임 시작 시 타이머 0으로 초기화
         surviveTimer = 0f;
         running = true;
     }
@@ -33,6 +36,9 @@ public class DodgeGame : MonoBehaviour
         if (!running || player == null) return;
 
         surviveTimer += Time.deltaTime;
+
+        if (timerText != null)
+            timerText.text = $"남은 시간: {Mathf.Max(0f, 5f - surviveTimer):F1}초";
 
         if (surviveTimer >= 5f && IsCleaared == false)
         {
@@ -95,7 +101,7 @@ public class DodgeGame : MonoBehaviour
             var rt = obstacles[i].GetComponent<RectTransform>();
             var pos = rt.anchoredPosition;
 
-            pos.y -= 380f * Time.deltaTime;
+            pos.y -= 600f * Time.deltaTime;
             rt.anchoredPosition = pos;
 
             if (Vector2.Distance(pos, playerPos) < 62f && IsOver == false)

@@ -1,16 +1,23 @@
 using UnityEngine;
+using TMPro;
 
 public class MashButtonGame : MonoBehaviour
 {
     public RectTransform gameArea;
     public GameObject barBackgroundPrefab;
     public GameObject barFillPrefab;
+    public TMP_Text instructionText;
+    public TMP_Text timerText;
+
+    [Header("타이머")]
+    public float timeLimit = 5f;
 
     private GameObject barBackground;
     private GameObject barFill;
     private float progress;
     private bool running = false;
     private bool IsCleared = false;
+    private float timeLeft;
 
     void Start()
     {
@@ -24,12 +31,24 @@ public class MashButtonGame : MonoBehaviour
         barFill.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, 48f);
 
         progress = 0f;
+        timeLeft = timeLimit;
         running = true;
     }
 
     void Update()
     {
         if (!running || barFill == null) return;
+
+        timeLeft -= Time.deltaTime;
+        if (timerText != null)
+            timerText.text = $"남은 시간: {Mathf.Max(0f, timeLeft):F1}";
+
+        if (timeLeft <= 0f)
+        {
+            running = false;
+            GameManager.instance.GameOver();
+            return;
+        }
 
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
             progress += 0.08f;

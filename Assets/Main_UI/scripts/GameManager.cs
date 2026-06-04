@@ -85,7 +85,7 @@ public class GameManager : MonoBehaviour
         {
             yield return null;
         }
-        stageText.text = "STAGE" + (++currentStage);
+        stageText.text = "STAGE " + (++currentStage);
         stageText.gameObject.SetActive(true);
 
         yield return new WaitForSecondsRealtime(1.2f);

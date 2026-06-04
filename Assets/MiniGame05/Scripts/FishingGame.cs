@@ -119,7 +119,7 @@ public class FishingGame : MonoBehaviour
 
         if (inGreen)
         {
-            instructionText.text = "낚시 성공! 🎣";
+            instructionText.text = "낚시 성공!!";
             fillImage.color = greenColor;
             SetGameImage(successSprite);    // 성공 이미지로 교체
             yield return new WaitForSeconds(0.5f);

@@ -1,16 +1,23 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
 
 public class DragToBoxGame : MonoBehaviour
 {
     public RectTransform gameArea;
     public GameObject goalBoxPrefab;
     public GameObject starPrefab;
+    public TMP_Text instructionText;
+    public TMP_Text timerText;
+
+    [Header("타이머")]
+    public float timeLimit = 5f;
 
     private GameObject box;
     private GameObject star;
     private bool running = false;
     private bool IsCleared = false;
+    private float timeLeft;
 
     void Start()
     {
@@ -31,7 +38,23 @@ public class DragToBoxGame : MonoBehaviour
         drag.dragArea = gameArea;
         drag.onDrop = CheckClear;
 
+        timeLeft = timeLimit;
         running = true;
+    }
+
+    void Update()
+    {
+        if (!running) return;
+
+        timeLeft -= Time.deltaTime;
+        if (timerText != null)
+            timerText.text = $"남은 시간: {Mathf.Max(0f, timeLeft):F1}";
+
+        if (timeLeft <= 0f)
+        {
+            running = false;
+            GameManager.instance.GameOver();
+        }
     }
 
     void CheckClear()

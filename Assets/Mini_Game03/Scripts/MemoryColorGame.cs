@@ -1,12 +1,18 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MemoryColorGame : MonoBehaviour
 {
     public RectTransform gameArea;
     public GameObject previewPrefab;
     public GameObject choicePrefab;
+    public TMP_Text instructionText;
+    public TMP_Text timerText;
+
+    [Header("타이머")]
+    public float timeLimit = 3f;
 
     private Color[] palette = {
         new Color(1f, 0.3f, 0.3f), new Color(0.25f, 1f, 0.35f),
@@ -19,9 +25,13 @@ public class MemoryColorGame : MonoBehaviour
     private bool running = false;
     private bool IsCleared = false;
     private bool IsOver = false;
+    private float timeLeft;
+    private bool timerActive = false;
 
     void Start()
     {
+        if (timerText != null) timerText.text = "";
+
         targetColor = palette[Random.Range(0, palette.Length)];
         preview = Instantiate(previewPrefab, gameArea);
         preview.GetComponent<RectTransform>().anchoredPosition = new Vector2(0f, 60f);
@@ -30,10 +40,33 @@ public class MemoryColorGame : MonoBehaviour
         StartCoroutine(ShowChoices());
     }
 
+    void Update()
+    {
+        if (!timerActive || !running) return;
+
+        timeLeft -= Time.deltaTime;
+        if (timerText != null)
+            timerText.text = $"남은 시간: {Mathf.Max(0f, timeLeft):F1}";
+
+        if (timeLeft <= 0f)
+        {
+            timerActive = false;
+            running = false;
+            if (IsOver == false)
+            {
+                IsOver = true;
+                GameManager.instance.GameOver();
+            }
+        }
+    }
+
     IEnumerator ShowChoices()
     {
         yield return new WaitForSeconds(0.9f);
         if (preview != null) Destroy(preview);
+
+        timeLeft = timeLimit;
+        timerActive = true;
 
         running = true;
         int[] order = { 0, 1, 2, 3 };
@@ -66,6 +99,7 @@ public class MemoryColorGame : MonoBehaviour
     {
         if (!running) return;
 
+        timerActive = false;
         running = false;
         if (selected == targetColor && IsCleared == false)
         {
