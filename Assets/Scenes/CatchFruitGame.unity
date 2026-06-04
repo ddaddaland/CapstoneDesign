@@ -758,13 +758,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2092268292}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aaaaaaaaaaaa0000aaaaaaaaaaaa0113, type: 3}
+  m_Script: {fileID: 11500000, guid: b3c45da5cc96cb24b99bc93f528565eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CatchFruitGame
   gameArea: {fileID: 1493521898}
-  basketPrefab: {fileID: 100000, guid: c1a32d86900c31e9dbb471e37c98b7f1, type: 3}
-  fruitRedPrefab: {fileID: 100000, guid: 6ca7b75b0a0585e7803e9a3ec8575303, type: 3}
-  fruitYellowPrefab: {fileID: 100000, guid: 8405d05d806393e1ae7b19515c24e824, type: 3}
+  basketPrefab: {fileID: 100000, guid: c5264b2116222e44cb55c3e40f8b0819, type: 3}
+  fruitRedPrefab: {fileID: 100000, guid: dbaeb44cfb8a547479b254056b48aad5, type: 3}
+  fruitYellowPrefab: {fileID: 100000, guid: 95f5bb903d90c364bab40e435bbb5063, type: 3}
   countText: {fileID: 1545554262}
   timerText: {fileID: 1133467758}
   timeLimit: 5

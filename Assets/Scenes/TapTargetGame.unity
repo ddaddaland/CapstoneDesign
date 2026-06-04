@@ -375,11 +375,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 772431011}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aaaaaaaaaaaa0000aaaaaaaaaaaa0111, type: 3}
+  m_Script: {fileID: 11500000, guid: ee17524564130bf41bf5687249024bf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TapTargetGame
   gameArea: {fileID: 408205218}
-  targetPrefab: {fileID: 100000, guid: f56e604170e5a4f48057c06e5c9534db, type: 3}
+  targetPrefab: {fileID: 100000, guid: b543d8bd08837b044ae0f5c80b2db093, type: 3}
   instructionText: {fileID: 1879050527}
   countText: {fileID: 1669734597}
   timerText: {fileID: 1235377547}
@@ -885,7 +885,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uBAA8\uB450 \uC81C\uAC70\uD574\uB77C!!"
+  m_text: "\uBAA8\uB450 \uC81C\uAC70\uD574\uB77C!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: bb12d5217c6dfe94887f755f45152758, type: 2}
   m_sharedMaterial: {fileID: -4680015298916984371, guid: bb12d5217c6dfe94887f755f45152758, type: 2}

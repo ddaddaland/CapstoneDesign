@@ -1392,7 +1392,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5309282917819562886, guid: 65695a1fd37ca4a4584e7f8dc811aa43, type: 3}
       propertyPath: moveSpeed
-      value: 30
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 6557790326186393606, guid: 65695a1fd37ca4a4584e7f8dc811aa43, type: 3}
       propertyPath: hpText

@@ -21,6 +21,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Mini_Game04.unity
     guid: ed241dc9633be044cb2a2e283be5f0a5
   - enabled: 1
+    path: Assets/Scenes/Mini_Game05.unity
+    guid: 6d85a8f08fa5a8b488f9647f1fea5024
+  - enabled: 1
+    path: Assets/Scenes/Mini_Game06.unity
+    guid: b0045c9e22cf5614d8adbdded4b647d6
+  - enabled: 1
     path: Assets/Scenes/CatchFruitGame.unity
     guid: 4be9bdfa7851f254b90bddc27b8ec2b9
   - enabled: 1

@@ -14,6 +14,8 @@ public class m01CrossMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Cursor.visible == true)
+            Cursor.visible = false;
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
         recoilOffset = Vector3.Lerp(recoilOffset, Vector3.zero, Time.deltaTime * recoverySpeed);

@@ -213,12 +213,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1039996916}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aaaaaaaaaaaa0000aaaaaaaaaaaa0112, type: 3}
+  m_Script: {fileID: 11500000, guid: 4d58f8a0c41b83141b44d541369f2fd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DodgeGame
   gameArea: {fileID: 1195038998}
-  playerPrefab: {fileID: 100000, guid: 575508802396a57ef77ef3aaf8ff5697, type: 3}
-  obstaclePrefab: {fileID: 100000, guid: d3c5d9842576e5d9cdfcc84057756242, type: 3}
+  playerPrefab: {fileID: 100000, guid: e906a13e9395be6439b9bcf095caf0a8, type: 3}
+  obstaclePrefab: {fileID: 100000, guid: c95de1827d32d9d47994a49145767196, type: 3}
   instructionText: {fileID: 1044413599}
   timerText: {fileID: 1103706088}
 --- !u!4 &1039996918

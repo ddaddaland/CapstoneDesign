@@ -626,7 +626,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 6c01790856fe5444cba92e74bfb197e9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1fbb24dddcaddf04aa05dc7633924a42, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -645,7 +645,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1429863999}
-  - component: {fileID: 1429863998}
+  - component: {fileID: 1429864000}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -653,27 +653,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1429863998
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1429863997}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 44dc81aa04bd40543898a7ee68e66c37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isGameOver: 0
-  textGoal: {fileID: 661519894}
-  goal: 10
-  green: {r: 0.49909228, g: 0.96981126, b: 0.3787753, a: 0}
-  red: {r: 1, g: 0.28490567, b: 0.28490567, a: 0}
-  targetFaceRenderer: {fileID: 1035332342}
-  normalFace: {fileID: 21300000, guid: 6c01790856fe5444cba92e74bfb197e9, type: 3}
-  winFace: {fileID: 21300000, guid: cff90c81bd116a445a47a9e3c4a3d25a, type: 3}
-  loseFace: {fileID: 21300000, guid: fa94bf30d2f3940499a4615e793fcfbf, type: 3}
 --- !u!4 &1429863999
 Transform:
   m_ObjectHideFlags: 0
@@ -689,6 +668,27 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1429864000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1429863997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38a0918fedb759b45ae55e211bfc1ad1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PinGameManager
+  isGameOver: 0
+  textGoal: {fileID: 661519894}
+  goal: 10
+  green: {r: 0.49803922, g: 0.96862745, b: 0.38039216, a: 0}
+  red: {r: 1, g: 0.28627452, b: 0.28627452, a: 0}
+  targetFaceRenderer: {fileID: 1035332342}
+  normalFace: {fileID: 21300000, guid: 1fbb24dddcaddf04aa05dc7633924a42, type: 3}
+  winFace: {fileID: 21300000, guid: dcef2c9195d6f3f43b65dc57d210875f, type: 3}
+  loseFace: {fileID: 21300000, guid: 2a6fb87551b8fc9469f4cbb61c370988, type: 3}
 --- !u!1 &1835148922
 GameObject:
   m_ObjectHideFlags: 0
@@ -698,7 +698,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1835148924}
-  - component: {fileID: 1835148923}
+  - component: {fileID: 1835148925}
   m_Layer: 0
   m_Name: Shooter
   m_TagString: Untagged
@@ -706,20 +706,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1835148923
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1835148922}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a79c68add1b35f459a779c251ddfc4a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pinObject: {fileID: 821773344877484711, guid: 170311f623637e94f8ec18dcf9ffaa7a, type: 3}
-  guideText: {fileID: 2041493389}
 --- !u!4 &1835148924
 Transform:
   m_ObjectHideFlags: 0
@@ -735,6 +721,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1835148925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1835148922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4f3fda24af369b4cb42bd1303692f42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Shooter
+  pinObject: {fileID: 821773344877484711, guid: e93f00f7167093948bff2a6de0c6c93c, type: 3}
+  guideText: {fileID: 2041493389}
 --- !u!1 &1836840843
 GameObject:
   m_ObjectHideFlags: 0
@@ -984,7 +984,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2108436252}
-  - component: {fileID: 2108436251}
+  - component: {fileID: 2108436254}
   - component: {fileID: 2108436253}
   m_Layer: 0
   m_Name: Target
@@ -993,21 +993,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2108436251
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2108436250}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3f6d80105a29d546a04f1f6214b33bf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotateSpeed: -50
-  minSpeed: 50
-  maxSpeed: 100
 --- !u!4 &2108436252
 Transform:
   m_ObjectHideFlags: 0
@@ -1060,6 +1045,21 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 7.5
+--- !u!114 &2108436254
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108436250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a06012f46bb3b342972fbe79c77da59, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Rotate
+  rotateSpeed: -50
+  minSpeed: 50
+  maxSpeed: 100
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

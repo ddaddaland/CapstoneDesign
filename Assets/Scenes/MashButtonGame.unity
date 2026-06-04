@@ -511,12 +511,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1480842036}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aaaaaaaaaaaa0000aaaaaaaaaaaa0115, type: 3}
+  m_Script: {fileID: 11500000, guid: cacf52bc6b5a8024f834d7f0188e81d2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MashButtonGame
   gameArea: {fileID: 338992447}
-  barBackgroundPrefab: {fileID: 100000, guid: becf0763a716db505661ff8a2ad26297, type: 3}
-  barFillPrefab: {fileID: 100000, guid: 8b33525b8411b2ff7200aca070a99de2, type: 3}
+  barBackgroundPrefab: {fileID: 100000, guid: b4dcc4a439db32b40b35fd6fae421a25, type: 3}
+  barFillPrefab: {fileID: 100000, guid: df2b70b8364298c4180d0aa4ab8081e7, type: 3}
   instructionText: {fileID: 1387728605}
   timerText: {fileID: 869125070}
   timeLimit: 5

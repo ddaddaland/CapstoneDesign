@@ -297,12 +297,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 801769383}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aaaaaaaaaaaa0000aaaaaaaaaaaa0114, type: 3}
+  m_Script: {fileID: 11500000, guid: 1eb4f2d745e924140a818f90d8ab17c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MemoryColorGame
   gameArea: {fileID: 2055242210}
-  previewPrefab: {fileID: 100000, guid: a795772307e83cb67da8869c5a8391af, type: 3}
-  choicePrefab: {fileID: 100000, guid: 3d64cbc201a2c06f452c0bbe3d7ac3db, type: 3}
+  previewPrefab: {fileID: 100000, guid: 5ac99d460c547914d88606d9b22e0b96, type: 3}
+  choicePrefab: {fileID: 100000, guid: a66d5dfe1fcc12e41b63d776ac6c4d9e, type: 3}
   instructionText: {fileID: 440785533}
   timerText: {fileID: 1953104480}
   timeLimit: 3

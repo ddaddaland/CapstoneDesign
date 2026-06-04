@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -85,13 +86,18 @@ public class GameManager : MonoBehaviour
         {
             yield return null;
         }
-        stageText.text = "STAGE " + (++currentStage);
+        stageText.text = "STAGE" + (++currentStage);
+
         stageText.gameObject.SetActive(true);
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
         yield return new WaitForSecondsRealtime(1.2f);
         stageText.text = "START";
         yield return new WaitForSecondsRealtime(0.7f);
         stageText.gameObject.SetActive(false);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         Time.timeScale = gameSpeed;
         
     }

@@ -354,15 +354,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 409171570}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aaaaaaaaaaaa0000aaaaaaaaaaaa0117, type: 3}
+  m_Script: {fileID: 11500000, guid: d920cd82d2f4ee14c995b4e3fd2ee084, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DragToBoxGame
   gameArea: {fileID: 1582023426}
-  goalBoxPrefab: {fileID: 100000, guid: 1a975f68e36ea3a783a1fcc3125d30f5, type: 3}
-  starPrefab: {fileID: 100000, guid: 8c995d7990e0d059740f16e868cb3b4a, type: 3}
+  goalBoxPrefab: {fileID: 100000, guid: e81088a91f44ed74cbdd2b62a0284c27, type: 3}
+  starPrefab: {fileID: 100000, guid: e0af49ce612a6a2488da096f5a5516f8, type: 3}
   instructionText: {fileID: 845916042}
   timerText: {fileID: 1932497436}
-  timeLimit: 3
+  timeLimit: 5
 --- !u!1 &845916040
 GameObject:
   m_ObjectHideFlags: 0
