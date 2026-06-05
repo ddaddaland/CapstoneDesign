@@ -5,6 +5,7 @@ public class m01CrossMove : MonoBehaviour
     private Vector3 mousePos;
     private Vector3 recoilOffset;
     private float recoverySpeed = 5f;
+    private bool IsVisible =  true;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -14,8 +15,11 @@ public class m01CrossMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Cursor.visible == true)
+        if (Cursor.visible == true && IsVisible == true)
+        {
+            IsVisible = false;
             Cursor.visible = false;
+        }
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0;
         recoilOffset = Vector3.Lerp(recoilOffset, Vector3.zero, Time.deltaTime * recoverySpeed);
